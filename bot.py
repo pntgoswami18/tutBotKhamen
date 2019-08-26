@@ -44,10 +44,21 @@ async def on_member_join(member):
 # handling custom messages being posted in the guild
 @client.event
 async def on_message(message):
+    """Handler for message event triggers
+
+    Arguments:
+        message {string} -- Message trigger
+
+    Raises:
+        exception: Exception on unhandled events
+        discord.DiscordException: Discord exception raised
+    """
 
     # don't want my bot to reply to my own messages
     # or its own messages in the guild
-    if message.author is client.user:
+    print(f'author is {message.author}')
+    print(f'message is {message.content}')
+    if message.author == client.user:
         return
 
     brooklyn_99_quotes = [
@@ -59,19 +70,34 @@ async def on_message(message):
         ),
     ]
 
-    if message.content is '99!':
+    # add some flavor here
+    hindi_expletives = []
+
+    if message.content == '99!':
+        print('99! triggered')
         response = random.choice(brooklyn_99_quotes)
         await message.channel.send(response)
 
     if 'happy birthday' in message.content.lower():
+        print('HDB triggered')
         await message.channel.send('Happy Birthday! 🎈🎉')
 
     #  deliberately raise exception
-    if message.content is 'raise-exception':
+    if message.content == 'raise-exception':
         raise discord.DiscordException
+
+    if 'sun be' in message.content.lower():
+        await message.channel.send('chup reh madarchod !')
+
+# error handler
 
 
 async def on_error(event, *a, **k):
+    """Error handler and logger for on_message raised errors
+
+    Arguments:
+        event {object} -- Event for which the exception is raised
+    """
     with open('err.log', a) as f:
         if event is 'on_message':
             f.write(f'Unhandled message: {a[0]}\n')
