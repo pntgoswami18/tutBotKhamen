@@ -2,6 +2,7 @@ import os
 import discord
 import random
 from dotenv import load_dotenv
+from discord.ext import commands
 
 # pull values frm .env file
 load_dotenv()
@@ -10,9 +11,13 @@ GUILD = os.getenv('DISCORD_GUILD')
 
 client = discord.Client()
 
+bot = commands.Bot(command_prefix='!')
+
 
 @client.event
 async def on_ready():
+    """Triggered when the bot is connected and ready
+    """
     print(f'{client.user} has connected to Discord!')
 
     # a bot user can be connected to many guilds.
@@ -34,6 +39,11 @@ async def on_ready():
 # handling event of a new memeber joining the guild
 @client.event
 async def on_member_join(member):
+    """Handles new members joining
+
+    Arguments:
+        member {object} -- Discord memeber object
+    """
     # create a direct message channel
     await member.create_dm()
     # send message
@@ -71,7 +81,22 @@ async def on_message(message):
     ]
 
     # add some flavor here
-    hindi_expletives = []
+    hindi_expletives = [
+        'mera lawda',
+        'bde hi ajeeb chutiye ho yaar tum',
+        'gaand m chattri daal k khol dunga aage bola to',
+        'ha tera baap hai, gandu',
+        'chup madarchod!',
+        'chup kar bhosdike',
+        'aisa marunga, parle-g kaali chai m dubona b naseeb nhi hoga'
+    ]
+
+    saanp_replies = [
+        'abu ha asli saanp mc',
+        'insaan hi insaan ko dass raha hai, saanp side m baith k hass raha h',
+        'ye jo saath m haste hain, baad m saanp ban k daste hain :snake:'
+
+    ]
 
     if message.content == '99!':
         print('99! triggered')
@@ -87,11 +112,30 @@ async def on_message(message):
         raise discord.DiscordException
 
     if 'sun be' in message.content.lower():
-        await message.channel.send('chup reh madarchod !')
+        await message.channel.send('chup madarchod! bilkul chup!')
+
+    if 'ssup' in message.content.lower():
+        await message.channel.send('bol bhadwe, teri baari ab')
+
+    if 'saanp' in message.content.lower():
+        response = random.choice(saanp_replies)
+        await message.channel.send(response)
+
+    if 'koi' in message.content.lower():
+        await message.channel.send('ha tera baap hai, gandu')
+
+    if 'kaun' in message.content.lower():
+        await message.channel.send('register m dekh insaan h ya bhagwaan')
+
+    if ' hi ' in message.content.lower():
+        await message.channel.send('aao haveli p. Guruji ka prasad leke jaoge.')
+
+    if str(message.author) == 'abutaha#2650':
+        response = random.choice(hindi_expletives)
+        await message.channel.send(response)
+
 
 # error handler
-
-
 async def on_error(event, *a, **k):
     """Error handler and logger for on_message raised errors
 
