@@ -130,9 +130,12 @@ async def on_message(message):
     if ' hi ' in message.content.lower():
         await message.channel.send('aao haveli p. Guruji ka prasad leke jaoge.')
 
+    # randomly send messages when abu messages
     if str(message.author) == 'abutaha#2650':
-        response = random.choice(hindi_expletives)
-        await message.channel.send(response)
+        send_message = random.choice([True, False])
+        if (send_message):
+            response = random.choice(hindi_expletives)
+            await message.channel.send(response)
 
 
 # error handler
@@ -146,6 +149,6 @@ async def on_error(event, *a, **k):
         if event is 'on_message':
             f.write(f'Unhandled message: {a[0]}\n')
         else:
-            raise
+            raise discord.DiscordException
 
 client.run(TOKEN)
