@@ -71,6 +71,7 @@ async def on_message(message):
     if message.author == client.user:
         return
 
+    # To-Do: move these texts into files and read from there
     brooklyn_99_quotes = [
         'I\'m the human form of the 💯 emoji.',
         'Bingpot!',
@@ -78,6 +79,22 @@ async def on_message(message):
             'Cool. Cool cool cool cool cool cool cool, '
             'no doubt no doubt no doubt no doubt.'
         ),
+        'Sarge, with all due respect, I am gonna completely ignore everything you just said.💁‍',
+        '''The English language can not fully capture the depth and complexity of my thoughts, 
+        so I’m incorporating emojis into my speech to better express myself. 😉''',
+        'A place where everybody knows your name is hell. You’re describing hell.',
+        'If I die, turn my tweets into a book.',
+        'I asked them if they wanted to embarrass you, and they instantly said yes.',
+        'Great, I’d like your $8-est bottle of wine, please.',
+        'Captain Wuntch. Good to see you. But if you’re here, who’s guarding Hades?',
+        'I’m playing Kwazy Cupcakes, I’m hydrated as hell, and I’m listening to Sheryl Crow. I’ve got my own party going on.',
+        'Anyone over the age of six celebrating a birthday should go to hell.',
+        'Captain, turn your greatest weakness into your greatest strength. Like Paris Hilton RE: her sex tape.',
+        'Jake, piece of advice: just give up. It’s the Boyle way. It’s why our family crest is a white flag.'
+    ]
+
+    hindi_expletives_triggers = [
+        'bc', 'bencho', 'mc', 'madarchod', 'bsdk', 'bhosdike'
     ]
 
     # add some flavor here
@@ -88,14 +105,25 @@ async def on_message(message):
         'ha tera baap hai, gandu',
         'chup madarchod!',
         'chup kar bhosdike',
-        'aisa marunga, parle-g kaali chai m dubona b naseeb nhi hoga'
+        'aisa marunga, parle-g kaali chai m dubona b naseeb nhi hoga',
+        'kya bawaseer hai re ye?!',
+        'gaali kaun diya bc?!'
     ]
 
     saanp_replies = [
-        'abu ha asli saanp mc',
+        'abu hai asli saanp mc',
         'insaan hi insaan ko dass raha hai, saanp side m baith k hass raha h',
-        'ye jo saath m haste hain, baad m saanp ban k daste hain :snake:'
+        'ye jo saath m haste hain, baad m saanp ban k daste hain :snake:',
+    ]
 
+    welcome_salutations = [
+        'hi', 'hello', 'how are you', 'hey'
+    ]
+
+    welcome_replies = [
+        f'kaun laya is {message.author} ko?!',
+        f'aao {message.author}. Guruji ka prasad leke jaoge.',
+        f'aham brahmasmi',
     ]
 
     if message.content == '99!':
@@ -127,8 +155,16 @@ async def on_message(message):
     if 'kaun' in message.content.lower():
         await message.channel.send('register m dekh insaan h ya bhagwaan')
 
-    if ' hi ' in message.content.lower():
-        await message.channel.send('aao haveli p. Guruji ka prasad leke jaoge.')
+    for x in hindi_expletives_triggers:
+        if x in message.content.lower():
+            response = random.choice(hindi_expletives)
+            await message.channel.send(response)
+
+    # random replies to welcome salutions
+    for x in welcome_salutations:
+        if x in message.content.lower():
+            response = random.choice(welcome_replies)
+            await message.channel.send(response)
 
     # randomly send messages when abu messages
     if str(message.author) == 'abutaha#2650':
