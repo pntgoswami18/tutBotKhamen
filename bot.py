@@ -3,6 +3,7 @@ import discord
 import random
 from dotenv import load_dotenv
 from discord.ext import commands
+from discord import DMChannel
 
 # pull values frm .env file
 load_dotenv()
@@ -64,11 +65,28 @@ async def on_message(message):
         discord.DiscordException: Discord exception raised
     """
 
+    dm_replies = [
+        'I\'m street so look both ways before you cross me',
+        'Speak your fucking mind',
+        'This is what you came for ?',
+        'I think that\'s his ass. Oh hells naw!',
+        'I\'m your fool, and you\'re my nizzle. And dat\'s fo\' real!',
+        'Get your retarded-looking saggy-ass pants out of my nose!',
+        'Yo, give me your scrilla before I shank your retarded-looking balls.',
+        "Don't try to slide into my DMs nigga",
+    ]
+
     # don't want my bot to reply to my own messages
     # or its own messages in the guild
     print(f'author is {message.author}')
     print(f'message is {message.content}')
     if message.author == client.user:
+        return
+
+    # reply to DMs
+    if isinstance(message.channel, DMChannel):
+        response = random.choice(dm_replies)
+        await message.author.send(response)
         return
 
     # To-Do: move these texts into files and read from there
@@ -172,6 +190,8 @@ async def on_message(message):
         if (send_message):
             response = random.choice(hindi_expletives)
             await message.channel.send(response)
+
+    print(message.channel.type)
 
 
 # error handler
